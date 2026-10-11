@@ -1,4 +1,3 @@
-import './App.css'
 import HeaderHome from '../src/component/headers/HeaderHome'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'

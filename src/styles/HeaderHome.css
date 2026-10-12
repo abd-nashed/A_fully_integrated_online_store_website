@@ -1,9 +1,9 @@
-/* ============================================
+/*
    Header - TechHaven Style
-   ============================================ */
+    */
 
 
-/* ============ Main Header ============ */
+/*  Main Header  */
 
 .header {
   position: sticky;
@@ -28,7 +28,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
 }
 
-/* ============ Logo ============ */
+/*  Logo  */
 
 .header-logo {
   display: flex;
@@ -80,7 +80,7 @@
   line-height: 0;
 }
 
-/* ============ Desktop Navigation ============ */
+/*  Desktop Navigation  */
 
 .header-nav {
   display: flex;
@@ -133,7 +133,6 @@
   right: 0;
 }
 
-/* ⭐ شارة على "العروض" */
 .header-nav-badge {
   display: inline-flex;
   align-items: center;
@@ -147,7 +146,7 @@
   letter-spacing: 0.5px;
 }
 
-/* ============ Desktop Actions ============ */
+/*  Desktop Actions  */
 
 .header-actions {
   display: flex;
@@ -156,7 +155,7 @@
   flex-shrink: 0;
 }
 
-/* ============ Language Button ============ */
+/*  Language Button  */
 
 .header-lang-btn {
   display: flex;
@@ -184,7 +183,7 @@
   font-size: var(--font-size-sm);
 }
 
-/* ============ Login Button ============ */
+/*  Login Button  */
 
 .header-login-link {
   text-decoration: none;
@@ -246,7 +245,23 @@
   transform: translateX(4px);
 }
 
-/* ============ Theme Toggle ============ */
+.header-login-text {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.header-login-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.header-login-icon svg {
+  display: block;
+}
+
+/*  Theme Toggle  */
 
 .header-theme-btn {
   width: 40px;
@@ -280,7 +295,7 @@
   transform: scale(0.85);
 }
 
-/* ============ Cart Button (Desktop) ============ */
+/*  Cart Button (Desktop)  */
 
 .header-cart-btn {
   position: relative;
@@ -337,7 +352,7 @@
   100% { transform: scale(1); }
 }
 
-/* ============ Hamburger Menu ============ */
+/*  Hamburger Menu  */
 
 .header-menu-btn {
   display: none;
@@ -376,7 +391,7 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* ============ Mobile Dropdown Menu ============ */
+/*  Mobile Dropdown Menu  */
 
 .header-mobile-menu {
   display: none;
@@ -401,7 +416,6 @@
   overscroll-behavior: contain;
 }
 
-/* شريط تمرير أنيق للقائمة */
 .header-mobile-menu.open::-webkit-scrollbar {
   width: 6px;
 }
@@ -508,7 +522,7 @@
   background-color: var(--color-primary-dark);
 }
 
-/* ============ User Box (Logged in) ============ */
+/*  User Box (Logged in)  */
 
 .header-user-box {
   display: flex;
@@ -591,7 +605,7 @@
   border-color: var(--color-danger);
 }
 
-/* ============ Mobile User Box ============ */
+/*  Mobile User Box  */
 
 .header-mobile-user-box {
   display: block;
@@ -627,7 +641,7 @@
   color: #FFFFFF;
 }
 
-/* ============ Mobile Cart Button ============ */
+/*  Mobile Cart Button  */
 
 .header-mobile-cart-btn {
   position: relative;
@@ -659,9 +673,9 @@
   border: none;
 }
 
-/* ============================================
+/*
    Logout Dialog
-   ============================================ */
+    */
 
 .logout-dialog-overlay {
   position: fixed;
@@ -765,9 +779,9 @@
   box-shadow: var(--shadow-md);
 }
 
-/* ============================================
+/*
    Responsive
-   ============================================ */
+    */
 
 @media (max-width: 1200px) {
   .header-nav {
@@ -794,36 +808,51 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .header-nav {
     display: none;
   }
 
-  /* ⭐ نُظهر الأكشنز على الموبايل */
   .header-actions {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
     margin-inline-start: auto;
+    flex-shrink: 0;
   }
 
-  /* ⭐ نخفي اللغة والثيم ويوزر بوكس على الموبايل (تبقى في القائمة المنسدلة) */
   .header-actions .header-lang-btn,
   .header-actions .header-theme-btn,
   .header-actions .header-user-box {
     display: none;
   }
 
-  /* ⭐ نُظهر السلة وزر تسجيل كمسؤول */
   .header-actions .header-cart-btn,
   .header-actions .header-login-link {
     display: flex;
   }
 
-  /* ⭐ نصغر زر تسجيل كمسؤول قليلاً على الموبايل */
+  .header-actions .header-login-text {
+    display: none;
+  }
+
+  .header-actions .header-login-icon {
+    display: inline-flex;
+    font-size: 18px;
+  }
+
   .header-actions .header-login-btn {
-    padding: 8px 14px;
-    font-size: 10px;
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .header-actions .header-login-arrow {
@@ -865,9 +894,15 @@
   }
 
   .header-actions .header-login-btn {
-    padding: 7px 10px;
-    font-size: 9px;
-    letter-spacing: 0.3px;
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    height: 36px;
+  }
+
+  .header-actions .header-login-icon svg {
+    width: 16px;
+    height: 16px;
   }
 
   .header-mobile-link {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +9,85 @@ const API_URL =
   import.meta.env.VITE_API_URL?.replace("/api", "") ||
   "http://127.0.0.1:8000";
 
+const HERO_IMAGES = {
+  dark: "/images/img.PNG",
+  light: "/images/light.JPG",
+};
+
+const STORAGE_KEY = "hero-theme";
+
+function getInitialTheme() {
+  if (typeof window === "undefined") return "dark";
+
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === "light" || saved === "dark") {
+      return saved;
+    }
+  } catch (e) {
+    /* ignore */
+  }
+
+  if (typeof document !== "undefined") {
+    const attr = document.documentElement.getAttribute("data-theme");
+    if (attr === "light" || attr === "dark") return attr;
+  }
+
+  return "dark";
+}
+
+function useThemeWithImage() {
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const otherTheme = theme === "dark" ? "light" : "dark";
+      const img = new Image();
+      img.src = HERO_IMAGES[otherTheme];
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [theme]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch (e) {
+      /* ignore */
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    const observer = new MutationObserver(() => {
+      const current = root.getAttribute("data-theme") || "dark";
+      setTheme(current);
+    });
+
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return theme;
+}
+
+if (typeof window !== "undefined") {
+  const initial = getInitialTheme();
+  const link = document.createElement("link");
+  link.rel = "preload";
+  link.as = "image";
+  link.href = HERO_IMAGES[initial];
+
+  if (!document.querySelector(`link[href="${HERO_IMAGES[initial]}"]`)) {
+    document.head.appendChild(link);
+  }
+}
+
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,6 +97,10 @@ export default function Home() {
 
   const { t, i18n } = useTranslation();
 
+  const theme = useThemeWithImage();
+
+  const heroImage = useMemo(() => HERO_IMAGES[theme], [theme]);
+
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang, i18n]);
@@ -26,7 +109,6 @@ export default function Home() {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  //  آخر 6 أقسام فقط
   const latestCategories = categories.slice(0, 6);
 
   return (
@@ -34,9 +116,7 @@ export default function Home() {
       className="home"
       style={{ direction: lang === "ar" ? "ltr" : "rtl" }}
     >
-      {/* Hero Section - TechHaven Style */}
       <section className="hero">
-        {/* Diagonal Accent Background */}
         <div className="hero-bg-accent"></div>
         <div className="hero-bg-grid"></div>
 
@@ -58,9 +138,7 @@ export default function Home() {
             </h1>
 
             <p className="hero-description">
-              {t(
-                "آلاف المنتجات من أفضل المتاجر، بأسعار تنافسية وتوصيل سريع"
-              )}
+              {t("آلاف المنتجات من أفضل المتاجر، بأسعار تنافسية وتوصيل سريع")}
             </p>
 
             <div className="hero-actions">
@@ -79,7 +157,6 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Stats Row */}
             <div className="hero-stats">
               <div className="hero-stat">
                 <span className="hero-stat-value">10K+</span>
@@ -98,29 +175,26 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Hero Visual */}
           <div className="hero-visual">
             <div className="hero-glow"></div>
             <div className="hero-ring hero-ring-1"></div>
             <div className="hero-ring hero-ring-2"></div>
             <div className="hero-ring hero-ring-3"></div>
 
-            <div className="hero-icon hero-icon-1">💻</div>
-            <div className="hero-icon hero-icon-2">🍔</div>
-            <div className="hero-icon hero-icon-3">👕</div>
-            <div className="hero-icon hero-icon-4">📱</div>
-            <div className="hero-icon hero-icon-5">☕</div>
-            <div className="hero-icon hero-icon-6">🎧</div>
-            <div className="hero-icon hero-icon-7">📚</div>
-            <div className="hero-icon hero-icon-8">🏠</div>
+            <img
+              src={heroImage}
+              alt={t("صورة تسويقية")}
+              className="hero-image"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
           </div>
         </div>
 
-        {/* Bottom Glow Line */}
         <div className="hero-bottom-line"></div>
       </section>
 
-      {/*Categories Section - TechHaven Style*/}
       <section className="categories">
         <div className="categories-container">
           <div className="categories-header">
@@ -186,7 +260,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section - TechHaven*/}
       <section className="home-cta">
         <div className="home-cta-container">
           <div className="home-cta-content">
